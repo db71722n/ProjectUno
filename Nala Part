@@ -1,0 +1,63 @@
+
+#def check_hand(player_card, pile_card):
+plus = 1
+
+def compare(player_card, pile_card):
+    print("compare", player_card[0])
+    print("compare", pile_card[0])
+    #print(player_card.index(3))
+    #Index 0 is number/special and index 1 is color
+    print(player_card)
+    if (player_card[0] == pile_card[0]):
+        print(player_card[0])
+        print(pile_card[0])
+        return True
+    elif (player_card[1] == pile_card[1]):
+        return True
+    elif (player_card[0] in range(10, 13)):#Run Check Special
+        return True
+    else:
+        return False
+
+
+#player hand is list of tuples
+def check_hand(player_hand, pile_card):
+    for card in player_hand:
+        print(card)
+        match = compare(card, pile_card)
+        if(match == True):
+            print('Match')
+        else:
+            print('No Match')
+
+def main():
+
+    hand = [(1, 'red'), (2, 'red'), (3, 'blue')]
+    hand1 = [(3, 'blue')]
+    check_hand(hand1, (1, 'red'))
+    return
+#Testers    
+#compare((3, 'red'), (3, 'red'))
+
+"""
+def check_special(card):
+    #if(card[0] == 10):
+        #wild()
+    if(card[0] == 11):
+        plus = 4
+    if(card[0] == 12):
+        plus = 2
+    #if(card[0] == 13):
+        #skip 
+"""
+
+if __name__ == '__main__':
+    main()
+
+"""
+    #Splitting the tuple into a list of 2 tuples
+    split = tuple(player_card[x:x + 1]
+        for x in range(0, len(player_card), 1))
+    print("result", list(split))
+    if(split[])
+"""
