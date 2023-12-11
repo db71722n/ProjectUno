@@ -18,7 +18,8 @@ def compare(player_card, pile_card):
         return True
     else:
         return False
-
+#.getColor
+#.getValue
 
 #player hand is list of tuples
 def check_hand(player_hand, pile_card):
