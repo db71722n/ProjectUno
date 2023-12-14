@@ -126,20 +126,15 @@ def checkSpecial(card):
 #YOU CAN LOOK AT THIS
 def wild():
     print("You drew a Wild card!")
-    new_color = input("Choose a color for the Wild card (Red, Green, Blue, or Yellow): ")
+    newColor = input("Choose a color for the Wild card (Red, Green, Blue, or Yellow): ")
 
-    if new_color.lower() in ['red', 'green', 'blue', 'yellow']:
-        wild_card = f'{new_color.capitalize()} Wild'
-        pile.append(wild_card)
-        print(f"The Wild card is now {new_color.capitalize()}.")
+    if new_color.lower() not in ['red', 'green', 'blue', 'yellow']:
+	print("Invalid color choice. Choose a valid color.")
     else:
-        print("Invalid color choice. Defaulting to Red.")
-        pile.append('Red Wild')
-
-# Example usage
-wild_card_index = 14
-if player_hand[wild_card_index] == 'Wild':
-    wild()
+        wildCard = f'{new_color.capitalize()} Wild'
+        pile.append(wildCard)
+        print(f"The Wild card is now {newColor.capitalize()}.")
+        
 
 def canPlay(color, value, playerHand):
 	for card in playerHand:
@@ -149,7 +144,6 @@ def canPlay(color, value, playerHand):
 			return True
 		else:
 			return False
-
 
 def main():
     players = []
