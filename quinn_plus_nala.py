@@ -43,7 +43,7 @@ class Card:
 #==================================================================================================
 #COMPARE CARDS
 #==================================================================================================
-
+	
 def compare(playerCard, pileCard):
     compatible = False
     print("compare", playerCard.getValue())
@@ -64,6 +64,27 @@ def compare(playerCard, pileCard):
     if (playerCard.getValue() > 9):
         checkSpecial(playerCard)
     return compatible
+
+def turn():
+	print("Your hand:", playerHand)
+    
+    compatible_cards = checkHand(playerHand, pileCard[-1])
+    
+    if not compatible_cards:
+        print("No playable cards. Draw a card.")
+        cardDrawn = uno_deck.pop(0)
+        player_hand.append(drawn_card)
+        print("You drew:", drawn_card)
+    else:
+        print("Playable cards:", compatible_cards)
+        chosen_card = input("Choose a card to play: ")
+
+        if chosen_card in compatible_cards:
+            print("You played:", chosen_card)
+            player_hand.remove(chosen_card)
+            pile.append(chosen_card)
+        else:
+            print("Invalid choice. Please choose a playable card.")
     
 #==================================================================================================
 #COMPARE HAND TO PILE
@@ -140,29 +161,6 @@ if currentColor != "Wild":
 else:
 	cardVal = "Any" #Play any card that follows rule. Has to have same color and or value
 
-def turn():
-    print("Your hand:", player_hand)
-    
-    compatible_cards = checkHand(player_hand, pileCard[-1])
-    
-    if not compatible_cards:
-        print("No playable cards. Draw a card.")
-        cardDrawn = uno_deck.pop(0)
-        player_hand.append(drawn_card)
-        print("You drew:", drawn_card)
-    else:
-        print("Playable cards:", compatible_cards)
-        chosen_card = input("Choose a card to play: ")
-
-        if chosen_card in compatible_cards:
-            print("You played:", chosen_card)
-            player_hand.remove(chosen_card)
-            pile.append(chosen_card)
-        else:
-            print("Invalid choice. Please choose a playable card.")
-
-# Example usage
-turn()
 
 if __name__ == '__main__':
     main()
