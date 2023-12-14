@@ -1,109 +1,72 @@
-import random
-# Generate Uno deck of 108 cards.
-#Parameters: None
-#Return Values: deck -> list
+def wild():
+    valid_colors = ['Red', 'Yellow', 'Blue', 'Green']
+    while True:
+        chosen_color = input("Choose a color for the Wild card (Red, Yellow, Blue, Green): ")
+        if chosen_color.capitalize() in valid_colors:
+            print(f"The Wild card is now {chosen_color.capitalize()}.")
+            break
+        else:
+            print("Invalid color choice. Try again.")
 
-def buildDeck():
-	deck = []
-	#Ex: Red 7, Green 8, Blue Skip
-	colors = ["Red", "Green", "Yellow", "Blue"]
-	values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"Draw Two", "Skip", "Reverse"]
-	wilds = ["Wild", "Wild Draw Four"]
-	for color in colors:
-		for value in values:
-				cardVal = "{} {}".format(color, value)
-				deck.append(cardVal)
-				if value != 0:
-					deck.append(cardVal)
-	for i in range(4):
-		deck.append(wilds[100])
-		deck.append(wilds[101])
-	return deck
+def turn(player, pile_card):
+    print(f"{player['name']}'s turn.")
+    print("Your hand:", [card.to_string() for card in player['hand']])
 
-#SHUFFLE a list of items passed into it
-#Parameters: deck -> list
-#Return values: deck -> list
+    # Run checkHand function
+    compatible_cards = check_hand(player['hand'], pile_card)
 
-def shuffleDeck(deck)
-	for cardPos in range(len(deck)): #Position of card in Deck
-		randPos = random.randint(0,107)
-		deck[cardPos], deck[randPos] = deck[randPos], deck[cardPos] #Shuffles cards pos
-	return deck
+    if compatible_cards:
+        while True:
+            print("Playable cards:")
+            for i, card in enumerate(compatible_cards, start=1):
+                print(f"({i}) {card.to_string()}")
 
+            chosen_index = input("Choose a card to play (enter the number): ")
 
-#DRAW CARD function that draws specified num of cards off the top of the deck
-#Parameters: numCards -> int
-#Return: cardsDrawn -> list
+            try:
+                chosen_index = int(chosen_index) - 1
+                if chosen_index in range(len(compatible_cards)):
+                    chosen_card = compatible_cards[chosen_index]
+                    pile_card.set_color(chosen_card.get_color())
+                    pile_card.set_value(chosen_card.get_value())
+                    print(f"You played: {chosen_card.to_string()}")
+                    return
+                else:
+                    print("Invalid number. Please choose a playable card.")
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+    else:
+        print("No playable cards.")
+        drawChoice = input("Do you want to draw a card from the deck? (Enter 'Yes'): ")
 
-def drawCards(numCards):
-	cardsDrawn = []
-	for x in range(numCards):
-		cardsDrawn.append(unoDeck.pop(0)) #Remove card from top of deck AND returns value
-	return cardsDrawn
+        if draw_choice.lower() == "yes":
+            drawn_card = card.pop(0)  # assuming the uno deck is a global variable
+            player['hand'].append(drawn_card)
+            print("You drew:", drawn_card.to_string())
 
-#SEE HAND: Players can see their hand
-#Print formatted list of player's hand
-#Parameter: player -> int, playerHand -> list
-#Return: cardsDrawn -> list
-
-
-def showHand(player, playerHand):
-	print("Player {}".format(players+1))
-	print("Your Hand")
-	print("-------------")
-	y = 1 #Each card shows us a number
-	for card in playerHand:
-		print("{}) {}".format(y, card))
-		y += 1 #1 is be the first and it'll increase
-	print("")
-
-
-#CHECK HAND to see if players can play a card or not
-#Parameters: color -> str, value -> str, playerHand -> list
-#Return: Boolean
-
-def canPlay(color, value, playerHand):
-	for card in playerHand:
-		if "Wild" in card:
-			return True
-		elif color in card or value in card:
-			return True
-		else:
-			return False
-	
-unoDeck = buildDeck()
-unoDeck = shuffleDeck(unoDeck)
-unoDeck = shuffleDeck(unoDeck) #To make sure it's shuffled well x2
-discards = []
-print(unoDeck)
-
-players = []
-numPlayers = int(input("How many players are there? "))
-while numPlayers < 2 or numPlayers > 4:
-	numPlayers = int(input("Invalid. Please enter a number between 2-4. How many Players? "))
-for player in players:
-	players.append(drawCards(7)) #Gives the amount of players 7 cards each
-print(players)
+            # Use the compare function again to see if the card is compatible
+            if compare(drawn_card, pile_card):
+                check_special(drawn_card)
+                print(f"You played: {drawn_card.to_string()}")
+            else:
+                print("Incompatible drawn card. Next player's turn.")
+        else:
+            print("End turn :]")
+def play_game():
+    numPlayers = int(input("How many players are there? "))
+    while numPlayers < 2 or numPlayers > 4:
+        numPlayers = int(input("Invalid. Please enter a number between 2-4. How many Players? "))
+    for player in numPlayers:
+        players.append(drawCard(7)) #Gives the amount of players 7 cards each
+        randomize = random.randomrange(0, 14)
+    print(players)
 
 #Who's turn is it first? Player 1, obviously. Which direction FIRST? Clockwise
 
-playerTurn = 0 #Player 1's Turn
-playDirection = 1 #To Reverse multiply by -1. To UNreverse, multiply by -1 again
-
-#AMOUNT OF CARDS LEFT
-playing = True #Make Boolean to check amount of cards
-discards.append(unoDeck.pop(0))
-splitCard = discards[0].split(" ", 1)
-currentColor = splitCard[0]
-
-if currentColor != 	"Wild":
-	cardVal = splitCard[1]
-else:
-	cardVal = "Any" #Play any card that follows rule. Has to have same color and or value
-
-
-while playing:
-	showHand(playerTurn, players[playerTurn])
-	print("Card on top of discard pile: {}".format(discards[-1])) #Last card added
-	if canPlay(currentColor, cardVal,players[playerTurn])
-		cardChosen = input("Which card would you like to play? ")
+    playerTurn = 0 #Player 1's Turn
+    playDirection = 1 
+    return
+        
+if __name__ == "__main__":
+    print("Welcome to UNO! Let's play!")
+    play_game()
