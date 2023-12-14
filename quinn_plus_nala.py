@@ -163,6 +163,29 @@ while playing:
 	if canPlay(currentColor, cardVal,players[playerTurn])
 		cardChosen = input("Which card would you like to play? ")
 
+def turn():
+    print("Your hand:", player_hand)
+    
+    compatible_cards = check_hand(player_hand, pile[-1])
+    
+    if not compatible_cards:
+        print("No playable cards. Draw a card.")
+        drawn_card = uno_deck.pop(0)
+        player_hand.append(drawn_card)
+        print("You drew:", drawn_card)
+    else:
+        print("Playable cards:", compatible_cards)
+        chosen_card = input("Choose a card to play: ")
+
+        if chosen_card in compatible_cards:
+            print("You played:", chosen_card)
+            player_hand.remove(chosen_card)
+            pile.append(chosen_card)
+        else:
+            print("Invalid choice. Please choose a playable card.")
+
+# Example usage
+turn()
 
 if __name__ == '__main__':
     main()
