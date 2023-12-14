@@ -103,6 +103,22 @@ def checkSpecial(card):
         plus = 4
         wild()
 
+def buildDeck():
+	deck = []
+	#Ex: Red 7, Green 8, Blue Skip
+	colors = ["Red", "Green", "Yellow", "Blue"]
+	values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"Draw Two", "Skip", "Reverse"]
+	wilds = ["Wild", "Wild Draw Four"]
+	for color in colors:
+		for value in values:
+				cardVal = "{} {}".format(color, value)
+				deck.append(cardVal)
+				if value != 0:
+					deck.append(cardVal)
+	for i in range(4):
+		deck.append(wilds[100])
+		deck.append(wilds[101])
+	return deck
 #INCLUDES WILD FUNCTION
 
 def canPlay(color, value, playerHand):
