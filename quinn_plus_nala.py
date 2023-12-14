@@ -1,5 +1,4 @@
-
-
+import random
 #def check_hand(player_card, pile_card):
 plus = 1
 
@@ -82,19 +81,19 @@ def checkHand(player_hand, pile_card):
             print('No Match')
             return False
 
-def main():
+#def main():
 
-    hand = [Card("Red", 5), ("Green", 'red'), (3, 'blue')]
-    hand1 = [Card("Special", 13)]
-    checkHand(hand1, Card("Red", 1))
-    return
+    #hand = [Card("Red", 5), ("Green", 'red'), (3, 'blue')]
+    #hand1 = [Card("Special", 13)]
+    c#heckHand(hand1, Card("Red", 1))
+    #return
 #Testers    
 #compare((3, 'red'), (3, 'red'))
 
 
 def checkSpecial(card):
     #if(card[0] == 10):
-        #skip
+        #skip_tracker +=2
     if(card[0] == 11):
         plus = 2
     if(card[0] == 12):
@@ -130,18 +129,21 @@ def canPlay(color, value, playerHand):
 		else:
 			return False
 
-players = []
-numPlayers = int(input("How many players are there? "))
-while numPlayers < 2 or numPlayers > 4:
-	numPlayers = int(input("Invalid. Please enter a number between 2-4. How many Players? "))
-for player in players:
-	players.append(drawCards(7)) #Gives the amount of players 7 cards each
-print(players)
+def main():
+    players = []
+    numPlayers = int(input("How many players are there? "))
+    while numPlayers < 2 or numPlayers > 4:
+        numPlayers = int(input("Invalid. Please enter a number between 2-4. How many Players? "))
+    for player in players:
+        players.append(drawCards(7)) #Gives the amount of players 7 cards each
+        randomize = random.randomrange(0, 14)
+    print(players)
 
 #Who's turn is it first? Player 1, obviously. Which direction FIRST? Clockwise
 
-playerTurn = 0 #Player 1's Turn
-playDirection = 1 #To Reverse multiply by -1. To UNreverse, multiply by -1 again
+    playerTurn = 0 #Player 1's Turn
+    playDirection = 1 #To Reverse multiply by -1. To UNreverse, multiply by -1 again
+    return
 
 #AMOUNT OF CARDS LEFT
 playing = True #Make Boolean to check amount of cards

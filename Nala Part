@@ -62,3 +62,7 @@ if __name__ == '__main__':
     print("result", list(split))
     if(split[])
 """
+def wild():
+    print("Choose the new color: ")
+    choose_color = input()
+    return choose_color.getColor
