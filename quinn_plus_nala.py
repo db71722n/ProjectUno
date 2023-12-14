@@ -103,6 +103,19 @@ def checkSpecial(card):
         plus = 4
         wild()
 
+players = []
+numPlayers = int(input("How many players are there? "))
+while numPlayers < 2 or numPlayers > 4:
+	numPlayers = int(input("Invalid. Please enter a number between 2-4. How many Players? "))
+for player in players:
+	players.append(drawCards(7)) #Gives the amount of players 7 cards each
+print(players)
+
+#Who's turn is it first? Player 1, obviously. Which direction FIRST? Clockwise
+
+playerTurn = 0 #Player 1's Turn
+playDirection = 1 #To Reverse multiply by -1. To UNreverse, multiply by -1 again
+
 
 if __name__ == '__main__':
     main()
