@@ -116,6 +116,24 @@ print(players)
 playerTurn = 0 #Player 1's Turn
 playDirection = 1 #To Reverse multiply by -1. To UNreverse, multiply by -1 again
 
+#AMOUNT OF CARDS LEFT
+playing = True #Make Boolean to check amount of cards
+discards.append(unoDeck.pop(0))
+splitCard = discards[0].split(" ", 1)
+currentColor = splitCard[0]
+
+if currentColor != 	"Wild":
+	cardVal = splitCard[1]
+else:
+	cardVal = "Any" #Play any card that follows rule. Has to have same color and or value
+
+
+while playing:
+	showHand(playerTurn, players[playerTurn])
+	print("Card on top of discard pile: {}".format(discards[-1])) #Last card added
+	if canPlay(currentColor, cardVal,players[playerTurn])
+		cardChosen = input("Which card would you like to play? ")
+
 
 if __name__ == '__main__':
     main()
