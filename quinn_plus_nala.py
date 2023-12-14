@@ -44,25 +44,25 @@ class Card:
 #COMPARE CARDS
 #==================================================================================================
 
-def compare(player_card, pile_card):
+def compare(playerCard, pileCard):
     compatible = False
-    print("compare", player_card.getValue())
-    print("compare", pile_card.getValue())
+    print("compare", playerCard.getValue())
+    print("compare", pileCard.getValue())
     #print(player_card.index(3))
     #Index 0 is number/special and index 1 is color
-    print(player_card.toString())
-    if (player_card.getValue() == pile_card.getValue()):
-        print(player_card.getValue())
-        print(pile_card.getValue())
+    print(playerCard.toString())
+    if (playerCard.getValue() == pileCard.getValue()):
+        print(playerCard.getValue())
+        print(pileCard.getValue())
         compatible = True
-    elif (player_card.getColor() == pile_card.getColor()):
+    elif (playerCard.getColor() == pileCard.getColor()):
         compatible = True
-    elif (player_card.getValue() > 12):
+    elif (playerCard.getValue() > 12):
         compatible = True
     else:
         compatible = False
-    if (player_card.getValue() > 9):
-        checkSpecial(player_card)
+    if (playerCard.getValue() > 9):
+        checkSpecial(playerCard)
     return compatible
     
 #==================================================================================================
@@ -70,10 +70,10 @@ def compare(player_card, pile_card):
 #==================================================================================================
 
 #player hand is list of tuples
-def checkHand(player_hand, pile_card):
-    for card in player_hand:
+def checkHand(playerHand, pileCard):
+    for card in playerHand:
         print(card)
-        match = compare(card, pile_card)
+        match = compare(card, pileCard)
         if(match == True):
             print('Match')
             return True
@@ -102,23 +102,7 @@ def checkSpecial(card):
         plus = 4
         wild()
 
-def buildDeck():
-	deck = []
-	#Ex: Red 7, Green 8, Blue Skip
-	colors = ["Red", "Green", "Yellow", "Blue"]
-	values = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9,"Draw Two", "Skip", "Reverse"]
-	wilds = ["Wild", "Wild Draw Four"]
-	for color in colors:
-		for value in values:
-				cardVal = "{} {}".format(color, value)
-				deck.append(cardVal)
-				if value != 0:
-					deck.append(cardVal)
-	for i in range(4):
-		deck.append(wilds[100])
-		deck.append(wilds[101])
-	return deck
-#INCLUDES WILD FUNCTION
+
 
 def canPlay(color, value, playerHand):
 	for card in playerHand:
@@ -151,26 +135,19 @@ discards.append(unoDeck.pop(0))
 splitCard = discards[0].split(" ", 1)
 currentColor = splitCard[0]
 
-if currentColor != 	"Wild":
+if currentColor != "Wild":
 	cardVal = splitCard[1]
 else:
 	cardVal = "Any" #Play any card that follows rule. Has to have same color and or value
 
-
-while playing:
-	showHand(playerTurn, players[playerTurn])
-	print("Card on top of discard pile: {}".format(discards[-1])) #Last card added
-	if canPlay(currentColor, cardVal,players[playerTurn])
-		cardChosen = input("Which card would you like to play? ")
-
 def turn():
     print("Your hand:", player_hand)
     
-    compatible_cards = check_hand(player_hand, pile[-1])
+    compatible_cards = checkHand(player_hand, pileCard[-1])
     
     if not compatible_cards:
         print("No playable cards. Draw a card.")
-        drawn_card = uno_deck.pop(0)
+        cardDrawn = uno_deck.pop(0)
         player_hand.append(drawn_card)
         print("You drew:", drawn_card)
     else:
