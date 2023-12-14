@@ -117,9 +117,9 @@ def checkSpecial(card):
         #skip_tracker +=2
     if(card[0] == 11):
         plus = 2
-    if(card[0] == 12):
+    if(card[0] == 13):
         wild()
-    #if(card[0] == 13):
+    if(card[0] == 14):
         plus = 4
         wild()
 
