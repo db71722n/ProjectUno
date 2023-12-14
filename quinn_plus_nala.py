@@ -103,6 +103,17 @@ def checkSpecial(card):
         plus = 4
         wild()
 
+#INCLUDES WILD FUNCTION
+
+def canPlay(color, value, playerHand):
+	for card in playerHand:
+		if "Wild" in card:
+			return True
+		elif color in card or value in card:
+			return True
+		else:
+			return False
+
 players = []
 numPlayers = int(input("How many players are there? "))
 while numPlayers < 2 or numPlayers > 4:
