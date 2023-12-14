@@ -123,7 +123,23 @@ def checkSpecial(card):
         plus = 4
         wild()
 
+#YOU CAN LOOK AT THIS
+def wild():
+    print("You drew a Wild card!")
+    new_color = input("Choose a color for the Wild card (Red, Green, Blue, or Yellow): ")
 
+    if new_color.lower() in ['red', 'green', 'blue', 'yellow']:
+        wild_card = f'{new_color.capitalize()} Wild'
+        pile.append(wild_card)
+        print(f"The Wild card is now {new_color.capitalize()}.")
+    else:
+        print("Invalid color choice. Defaulting to Red.")
+        pile.append('Red Wild')
+
+# Example usage
+wild_card_index = 14
+if player_hand[wild_card_index] == 'Wild':
+    wild()
 
 def canPlay(color, value, playerHand):
 	for card in playerHand:
@@ -134,13 +150,14 @@ def canPlay(color, value, playerHand):
 		else:
 			return False
 
+
 def main():
     players = []
     numPlayers = int(input("How many players are there? "))
     while numPlayers < 2 or numPlayers > 4:
         numPlayers = int(input("Invalid. Please enter a number between 2-4. How many Players? "))
     for player in players:
-        players.append(drawCards(7)) #Gives the amount of players 7 cards each
+        players.append(drawCard(7)) #Gives the amount of players 7 cards each
         randomize = random.randomrange(0, 14)
     print(players)
 
