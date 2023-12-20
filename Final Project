@@ -6,13 +6,13 @@ class Card:
         self.value = value
 
 class UnoDeck:
-    COLORS = ['Red', 'Yellow', 'Green', 'Blue']
-    VALUES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Skip', 'Draw 2']
-    SPECIAL_CARDS = ['Draw 4', 'Wild']
+    init_colors = ['Red', 'Yellow', 'Green', 'Blue']
+    init_values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Skip', 'Draw 2']
+    special_cards = ['Draw 4', 'Wild']
 
     def __init__(self):
-        self.deck = [Card(color, value) for color in self.COLORS for value in self.VALUES] + \
-                    [Card('Black', value) for value in self.SPECIAL_CARDS]
+        self.deck = [Card(color, value) for color in self.init_colors for value in self.init_values] + \
+                    [Card('Black', value) for value in self.special_cards]
 
     def shuffle_deck(self):
         random.shuffle(self.deck)
@@ -60,7 +60,7 @@ class UnoGame:
             self.generate_cards(player, 4)
         elif chosen_card.value == 'Wild':
             chosen_color = input("Choose the new color (Red, Yellow, Green, Blue): ").capitalize()
-            while chosen_color not in UnoDeck.COLORS:
+            while chosen_color not in UnoDeck.init_colors:
                 print("Invalid color choice. Please choose Red, Yellow, Green, or Blue.")
                 chosen_color = input("Choose the new color (Red, Yellow, Green, Blue): ").capitalize()
             chosen_card.color = chosen_color
@@ -80,7 +80,7 @@ class UnoGame:
             self.draw_cards(player, 4)
         elif new_card.value == 'Wild':
             chosen_color = input("Choose the color for Wild (Red, Yellow, Green, Blue): ").capitalize()
-            while chosen_color not in UnoDeck.COLORS:
+            while chosen_color not in UnoDeck.init_colors:
                 print("Invalid color choice. Please choose Red, Yellow, Green, or Blue.")
                 chosen_color = input("Choose the color for Wild (Red, Yellow, Green, Blue): ").capitalize()
             new_card.color = chosen_color
