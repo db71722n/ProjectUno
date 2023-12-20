@@ -1,168 +1,147 @@
 import random
 
-plus = 1
-players = []
-uno_deck = []
-
 class Card:
-    def __init__(self, init_color, init_value):
-        self.color = init_color
-        self.value = init_value
+    def __init__(self, color, value):
+        self.color = color
+        self.value = value
 
-    def set_color(self, param):
-        self.color = param
+class UnoDeck:
+    COLORS = ['Red', 'Yellow', 'Green', 'Blue']
+    VALUES = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Skip', 'Draw 2']
+    SPECIAL_CARDS = ['Draw 4', 'Wild']
 
-    def set_value(self, param):
-        self.value = param
+    def __init__(self):
+        self.deck = [Card(color, value) for color in self.COLORS for value in self.VALUES] + \
+                    [Card('Black', value) for value in self.SPECIAL_CARDS]
 
-    def get_color(self):
-        return self.color
+    def shuffle_deck(self):
+        random.shuffle(self.deck)
 
-    def get_value(self):
-        return self.value
+    def deal_cards(self, num_players):
+        hands = [[] for _ in range(num_players)]
+        for _ in range(7):
+            for hand in hands:
+                hand.append(self.deck.pop())
+        return hands
 
-    def to_string(self):
-        color = self.color
-        value = self.value
-        if self.value < 10:
-            return color + " " + str(value)
-        elif value == 10:
-            return color + " Skip"
-        elif value == 11:
-            return color + " +2"
-        elif value == 13:
-            return "Wild Card"
-        elif value == 14:
-            return "+4 Card"
-        else:
-            return "Something went wrong..."
+class UnoGame:
+    def __init__(self):
+        print("Welcome to the Uno Simulator game!")
+        self.deck = UnoDeck()
+        self.deck.shuffle_deck()
+        self.players = self.get_num_players()
+        self.hands = self.deck.deal_cards(self.players)
+        self.pile = self.deck.deck.pop()
 
-def compare(player_card, pile_card):
-    compatible = False
-    print("compare", player_card.get_value())
-    print("compare", pile_card.get_value())
-    print(player_card.to_string())
-
-    if player_card.get_value() == pile_card.get_value():
-        compatible = True
-    elif player_card.get_color() == pile_card.get_color():
-        compatible = True
-    elif player_card.get_value() > 12:
-        compatible = True
-    else:
-        compatible = False
-
-    if player_card.get_value() > 9:
-        check_special(player_card)
-
-    return compatible
-
-def check_hand(player_hand, pile_card):
-    compatible_cards = []
-    for card in player_hand:
-        print(card.to_string())
-        match = compare(card, pile_card)
-        if match:
-            print('Match')
-            compatible_cards.append(card)
-    return compatible_cards
-
-def check_special(card):
-    global plus
-    if card.get_value() == 11:
-        plus = 2
-    elif card.get_value() == 12:
-        wild()
-
-def wild():
-    valid_colors = ['Red', 'Yellow', 'Blue', 'Green']
-    chosen_color = input("Choose a color for the Wild card (Red, Yellow, Blue, Green): ")
-    while True:
-        if chosen_color.capitalize() in valid_colors:
-            print(f"The Wild card is now {chosen_color.capitalize()}.")
-            break
-        else:
-            print("Invalid color choice. Try again.")
-
-def turn(player, pile_card):
-    global uno_deck
-    print(f"{player['name']}'s turn.")
-    print("Your hand:", [card.to_string() for card in player['hand']])
-
-    # Run check_hand function
-    compatible_cards = check_hand(player['hand'], pile_card)
-
-    if compatible_cards:
+    def get_num_players(self):
         while True:
-            print("Playable cards:")
-            for i, card in enumerate(compatible_cards, start=1):
-                print(f"({i}) {card.to_string()}")
-
-            chosen_index = input("Choose a card to play (enter the number): ")
-
             try:
-                chosen_index = int(chosen_index) - 1
-                if chosen_index in range(len(compatible_cards)):
-                    chosen_card = compatible_cards[chosen_index]
-                    pile_card.set_color(chosen_card.get_color())
-                    pile_card.set_value(chosen_card.get_value())
-                    player['hand'].remove(chosen_card)
-                    print(f"You played: {chosen_card.to_string()}")
-                    return
+                num_players = int(input("Enter the number of players (2 to 4): "))
+                if 2 <= num_players <= 4:
+                    return num_players
                 else:
-                    print("Invalid number. Please choose a playable card.")
+                    print("Invalid input. Please enter a number between 2 and 4.")
             except ValueError:
                 print("Invalid input. Please enter a valid number.")
-    else:
-        print("No playable cards.")
-        draw_choice = input("You have to draw from deck. Enter 'yes': ")
 
-        if draw_choice.lower() == "yes":
-            drawn_card = uno_deck.pop(0)
-            player['hand'].append(drawn_card)
-            print("You drew:", drawn_card.to_string())
+    def display_hand(self, player_hand):
+        print("Your current hand:")
+        for i, card in enumerate(player_hand, start=1):
+            print(f"{i}. {card.color} {card.value}")
 
-            # Use the compare function again to see if the card is compatible
-            if compare(drawn_card, pile_card):
-                check_special(drawn_card)
-                player['hand'].remove(drawn_card)
-                print(f"You played: {drawn_card.to_string()}")
-            else:
-                print("Incompatible drawn card. Next player's turn.")
-        else:
-            print("End turn :]")
+    def special_cards(self, chosen_card):
+        if chosen_card.value == 'Skip':
+            print("The following player is skipped and loses their turn.")
+        elif chosen_card.value == 'Draw 2':
+            print("The following player draws 2 cards.")
+            self.generate_cards(player, 2)
+        elif chosen_card.value == 'Draw 4':
+            print("The following player draws 4 cards.")
+            self.generate_cards(player, 4)
+        elif chosen_card.value == 'Wild':
+            chosen_color = input("Choose the new color (Red, Yellow, Green, Blue): ").capitalize()
+            while chosen_color not in UnoDeck.COLORS:
+                print("Invalid color choice. Please choose Red, Yellow, Green, or Blue.")
+                chosen_color = input("Choose the new color (Red, Yellow, Green, Blue): ").capitalize()
+            chosen_card.color = chosen_color
+            print(f"Wild card color changed to {chosen_color}.")
 
-def play_game():
-    global uno_deck
+    def generate_cards(self, player, num_cards):
+        init_colors = ['Red', 'Blue', 'Green', 'Yellow']
+        random_color = random.choice(init_colors)
+        random_num = random.randrange(1, 10)
+        new_card = Card(random_color, random_num)
+        
+        if new_card.value == 'Draw 2':
+            print(f"Player {player + 1} draws 2 cards.")
+            self.draw_cards(player, 2)
+        elif new_card.value == 'Draw 4':
+            print(f"Player {player + 1} draws 4 cards.")
+            self.draw_cards(player, 4)
+        elif new_card.value == 'Wild':
+            chosen_color = input("Choose the color for Wild (Red, Yellow, Green, Blue): ").capitalize()
+            while chosen_color not in UnoDeck.COLORS:
+                print("Invalid color choice. Please choose Red, Yellow, Green, or Blue.")
+                chosen_color = input("Choose the color for Wild (Red, Yellow, Green, Blue): ").capitalize()
+            new_card.color = chosen_color
 
-    while True:
-        try:
-            num_players = int(input("Enter the number of players: "))
-            if 2 <= num_players <= 4:
-                break
-            else:
-                print("Invalid input. Please enter a number between 2 and 4.")
-        except ValueError:
-            print("Invalid input. Please enter a valid number.")
+        return new_card
 
-    for i in range(1, num_players + 1):
-        players.append({"name": f"Player {i}", "hand": [Card(random.choice(['Red', 'Yellow', 'Blue', 'Green']),
-                                                                random.randint(1, 10)) for _ in range(7)]})
+    def draw_cards(self, player, num_cards):
+        for _ in range(num_cards):
+            self.hands[player].append(self.deck.deck.pop())
+        print(f"Player {player + 1} drew {num_cards} cards.")
 
-    uno_deck = [Card(color, value) for color in ['Red', 'Yellow', 'Blue', 'Green'] for value in range(1, 10) for _ in range(2)]
-    uno_deck.extend([Card('Wild', 11) for _ in range(4)])
-    uno_deck.extend([Card('Wild', 12) for _ in range(4)])
-    random.shuffle(uno_deck)
+    def check_hand(self, player_hand):
+        compatible_cards = [card for card in player_hand if card.color == self.pile.color or card.value == self.pile.value or card.value in UnoDeck.SPECIAL_CARDS]
+        return compatible_cards
 
-    pile_card = uno_deck.pop(0)
+    def turn(self, player):
+        players_turn_over = False
+        print(f"\nPlayer {player + 1}'s turn:")
+        current_player_hand = self.hands[player]
+        print("Current Pile Card:", self.pile.color, self.pile.value)
+        self.display_hand(current_player_hand)
 
-    while True:
-        for player in players:
-            turn(player, pile_card)
-            if not player['hand']:
-                print(f"{player['name']} has won! Game Over.")
-                return
+        compatible_cards = self.check_hand(current_player_hand)
+
+        while not players_turn_over:
+            try:
+                choice = int(input("Enter the number of the card you want to play: "))
+                if 1 <= choice <= len(current_player_hand):
+                    chosen_card = current_player_hand[choice - 1]
+                    if chosen_card in compatible_cards or chosen_card.value in UnoDeck.SPECIAL_CARDS:
+                        current_player_hand.remove(chosen_card)
+                        self.pile = chosen_card
+                        print(f"Player {player + 1} played {chosen_card.color} {chosen_card.value}.\n")
+                        self.special_cards(chosen_card)
+                        if chosen_card.value == 'Skip':
+                            next_player = (player + 2) % self.players  # Skip the following player
+                            print(f"Player {next_player + 1} is skipped.")
+                        players_turn_over = True
+                    else:
+                        print("Invalid choice. The card does not match the color or value of the pile card.")
+                else:
+                    print("Invalid choice. Please enter a number within the range.")
+
+            except ValueError:
+                print("Invalid input. Please enter a valid number.")
+
+        # Check if there are compatible cards after the player's turn
+        if not self.check_hand(current_player_hand):
+            print(f"No compatible cards. Drawing a card for Player {player + 1}.")
+            self.draw_cards(player, 1)
+
+    def play_game(self):
+        print("Let the game begin!")
+        while True:
+            for player in range(self.players):
+                self.turn(player)
+                # Check for a winner
+                if len(self.hands[player]) == 0:
+                    print(f"Player {player + 1} wins!")
+                    return
 
 if __name__ == "__main__":
-    print("Welcome to the Infinite Uno Deck Simulator! Let's play!")
-    play_game()
+    uno_game = UnoGame()
+    uno_game.play_game()
