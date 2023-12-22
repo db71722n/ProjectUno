@@ -8,11 +8,11 @@ class Card:
 class UnoDeck:
     init_colors = ['Red', 'Yellow', 'Green', 'Blue']
     init_values = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'Skip', 'Draw 2']
-    special_cards = ['Draw 4', 'Wild']
+    SPECIAL_CARDS = ['Draw 4', 'Wild']
 
     def __init__(self):
         self.deck = [Card(color, value) for color in self.init_colors for value in self.init_values] + \
-                    [Card('Black', value) for value in self.special_cards]
+                    [Card('Black', value) for value in self.SPECIAL_CARDS]
 
     def shuffle_deck(self):
         random.shuffle(self.deck)
@@ -49,7 +49,7 @@ class UnoGame:
         for i, card in enumerate(player_hand, start=1):
             print(f"{i}. {card.color} {card.value}")
 
-    def special_cards(self, chosen_card):
+    def SPECIAL_CARDS(self, chosen_card):
         if chosen_card.value == 'Skip':
             print("The following player is skipped and loses their turn.")
         elif chosen_card.value == 'Draw 2':
